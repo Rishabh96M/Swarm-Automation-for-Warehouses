@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(test_circle)
+project(warehouse_swarm)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -9,7 +9,6 @@ project(test_circle)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy
   std_msgs
 )
 
@@ -103,10 +102,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES test_circle
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS include/structs include/swarm_master include/swarm_worker include/task_orchestrator
+  LIBRARIES warehouse_swarm
+  CATKIN_DEPENDS roscpp std_msgs
+  DEPENDS system_lib
 )
 
 ###########
@@ -116,13 +115,16 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  ${CMAKE_SOURCE_DIR}/include/structs
+  ${CMAKE_SOURCE_DIR}/include/swarm_master
+  ${CMAKE_SOURCE_DIR}/include/swarm_worker
+  ${CMAKE_SOURCE_DIR}/include/task_orchestrator
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/test_circle.cpp
+#   src/${PROJECT_NAME}/warehouse_swarm.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -133,10 +135,15 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/test_circle_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/warehouse_swarm_node.cpp)
 
-add_executable(circle src/move_circle.cpp)
-target_link_libraries(circle ${catkin_LIBRARIES})
+add_executable(warehouse_swarm
+  src/swarm_master/assignment_designator.cpp
+  src/swarm_master/site.cpp
+  src/swarm_master/swarm_master.cpp
+  src/main.cpp
+)
+target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -199,11 +206,18 @@ target_link_libraries(circle ${catkin_LIBRARIES})
 ## Testing ##
 #############
 
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_test_circle.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+# Add gtest based cpp test target and link libraries
+catkin_add_gtest(warehouse_swarm_test 
+  test/main.cpp
+  test/test_swarm_master.cpp
 
-## Add folders to be run by python nosetests
+  src/swarm_master/assignment_designator.cpp
+  src/swarm_master/site.cpp
+  src/swarm_master/swarm_master.cpp
+)
+if(TARGET warehouse_swarm_test)
+  target_link_libraries(warehouse_swarm_test ${catkin_LIBRARIES})
+endif()
+
+# # Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
