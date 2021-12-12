@@ -17,6 +17,7 @@
 #include "./swarm_robot.hpp"
 #include <std_msgs/Empty.h>
 #include <std_msgs/UInt16.h>
+#include <nav_msgs/Odometry.h>
 #include <warehouse_swarm/RobotTask.h>
 
 
@@ -32,7 +33,7 @@ class RosSwarmRobot : public SwarmRobot {
     bool ready = false;
 
  public:
-    RosSwarmRobot(std::string task_service_topic);
+    RosSwarmRobot(std::string task_service_topic="/task");
     ~RosSwarmRobot();
 
     /**
@@ -44,7 +45,6 @@ class RosSwarmRobot : public SwarmRobot {
     bool connect_to_master();
 
     void update_robot_pos(const nav_msgs::Odometry::ConstPtr& msg);
-
 
     /**
      * @brief Drive with mecanum wheels
@@ -74,7 +74,7 @@ class RosSwarmRobot : public SwarmRobot {
 
     void wait(int site_id);
 
-    void is_ready(std_msgs::Empty::ConstPtr&);
+    void is_ready(const std_msgs::Empty::ConstPtr&);
 
     void run();
 

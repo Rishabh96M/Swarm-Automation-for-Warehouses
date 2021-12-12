@@ -79,4 +79,6 @@ class SwarmRobot {
     Task get_task_from_queue();
     
     bool is_queue_empty();
+
+    int get_robot_id();
 };
