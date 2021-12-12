@@ -92,7 +92,7 @@ bool RosSwarmRobot::turn_mecanum(double z) {
     // Modify this!!
     double error = curr_pos[3] - z;
     while (error < 0.1) {
-        double ang_vel_value = turn_towards(z);
+        double ang_vel_value = RosSwarmRobot::turn_towards(z);
         // Publish a position or velocity to robot_id/cmd_vel
         geometry_msgs::Twist velocity;
         velocity.angular.z = ang_vel_value;
