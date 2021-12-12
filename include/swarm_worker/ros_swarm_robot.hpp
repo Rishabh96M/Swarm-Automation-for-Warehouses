@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include <ros.h>
+#include <ros/ros.h>
 #include <string>
 #include <array>
 #include "./swarm_robot.hpp"
@@ -22,12 +22,10 @@
 
 class RosSwarmRobot : public SwarmRobot {
  private:
-    ros::NodeHandle nh;
+   ros::NodeHandle nh;
     std::string task_service_topic;
-    std::string pos_publisher_topic;
     ros::ServiceClient swarm_connect_client;
     ros::ServiceServer task_server;
-    ros::Publisher pos_publisher;
     ros::Publisher vel_pub;
     ros::Subscriber pos_sub;
     ros::Subscriber task_sub;
@@ -45,13 +43,8 @@ class RosSwarmRobot : public SwarmRobot {
      */
     bool connect_to_master();
 
-    /**
-     * @brief Publish robot position
-     * 
-     * @return true 
-     * @return false 
-     */
-    void publish_robot_pos();
+    void update_robot_pos(const nav_msgs::Odometry::ConstPtr& msg);
+
 
     /**
      * @brief Drive with mecanum wheels
@@ -76,9 +69,7 @@ class RosSwarmRobot : public SwarmRobot {
      * @return false 
      */
     bool publish_platform_height(double);
-    
-    void update_robot_pos(const nav_msgs::Odometry::ConstPtr& msg);
-    
+
     void get_task_callback(const warehouse_swarm::RobotTask::ConstPtr& task_msg);
 
     void wait(int site_id);
@@ -86,4 +77,6 @@ class RosSwarmRobot : public SwarmRobot {
     void is_ready(std_msgs::Empty::ConstPtr&);
 
     void run();
+
+    
 };

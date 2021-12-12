@@ -27,7 +27,7 @@
 #include "geometry_msgs/Vector3.h"
 #include "geometry_msgs/Quaternion.h"
 #include "tf/transform_datatypes.h"
-#include "LinearMath/btMatrix3x3.h"
+#include "tf/LinearMath/Matrix3x3.h"
 
 
 RosSwarmRobot::RosSwarmRobot(std::string task_service_topic): 
@@ -66,9 +66,15 @@ bool RosSwarmRobot::connect_to_master() {
 void RosSwarmRobot::update_robot_pos(const nav_msgs::Odometry::ConstPtr& msg) {
     auto pose = msg->pose;
     auto position = pose.pose.position;
-    auto orirntation = pose.pose.orientation;
+    auto orientation = pose.pose.orientation;
 
-    curr_pos = {position.x, position.y, 0};
+    tf::Quaternion tf_orinetation;
+
+    tf::quaternionMsgToTF(orientation,tf_orinetation);
+    double roll, pitch, yaw;
+    tf::Matrix3x3(tf_orinetation).getRPY(roll, pitch, yaw);
+
+    curr_pos = {position.x, position.y, yaw};
 }
 
 bool RosSwarmRobot::drive_mecanum(std::array<double, 2> target) {
