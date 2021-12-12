@@ -22,6 +22,7 @@ class SwarmRobot {
     Crate designated_crate;
     std::queue<Task> task_queue;
     std::array<double, 3> curr_pos;
+    double platform_height{};
 
     /**
      * @brief Set the id int
@@ -69,4 +70,13 @@ class SwarmRobot {
      * @return double 
      */
     double set_platform_height(double delta_h);
+    
+    /**
+     * @brief Get first task from task queue
+     * 
+     * @param task 
+     */
+    Task get_task_from_queue();
+    
+    bool is_queue_empty();
 };
