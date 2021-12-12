@@ -89,4 +89,11 @@ class RosSwarmMaster {
    */
   void startup(double duration=10, double hz=20);
 
+  /**
+   * @brief Get the swarm master object. FOR TESTING ONLY
+   * 
+   * @return SwarmMaster* 
+   */
+  SwarmMaster* get_swarm_master();
+
 };
