@@ -27,7 +27,7 @@
 #include "geometry_msgs/Vector3.h"
 #include "geometry_msgs/Quaternion.h"
 #include "tf/transform_datatypes.h"
-#include "tf/LinearMath/Matrix3x3.h"
+#include <tf/LinearMath/Matrix3x3.h> 
 
 
 RosSwarmRobot::RosSwarmRobot(std::string task_service_topic): 
@@ -91,6 +91,7 @@ bool RosSwarmRobot::drive_mecanum(std::array<double, 2> target) {
         loop_rate.sleep();
         ros::spinOnce();
     }
+    return true;
 }
 
 bool RosSwarmRobot::turn_mecanum(double z) {
@@ -106,6 +107,7 @@ bool RosSwarmRobot::turn_mecanum(double z) {
         loop_rate.sleep();
         ros::spinOnce();
     }
+    return true;
 }
 
 bool RosSwarmRobot::publish_platform_height(double z) {
@@ -113,6 +115,7 @@ bool RosSwarmRobot::publish_platform_height(double z) {
     // Publish height to the joint 
     double a = RosSwarmRobot::set_platform_height(z);
     // Publish a to which topic?  -  
+    return true;
 }
 
 void RosSwarmRobot::get_task_callback(const warehouse_swarm::RobotTask::ConstPtr& task_msg){
@@ -136,7 +139,9 @@ void RosSwarmRobot::wait(int site_id) {
     ros::Subscriber ready_sub = nh.subscribe("site_" + std::to_string(site_id) + "/ready", 1000, &RosSwarmRobot::is_ready, this);
     ros::Publisher waiting_pub = nh.advertise<std_msgs::UInt16>(std::to_string(site_id) + "/waiting", 1000);
     ros::Rate loop_rate(20);
-    waiting_pub.publish(robot_id);
+    std_msgs::UInt16 msg;
+    msg.data = robot_id;
+    waiting_pub.publish(msg);
     while (!ready) {
         loop_rate.sleep();
         ros::spinOnce();
@@ -145,7 +150,7 @@ void RosSwarmRobot::wait(int site_id) {
     ready = false;
 }
 
-void RosSwarmRobot::is_ready(std_msgs::Empty::ConstPtr&) {
+void RosSwarmRobot::is_ready(const std_msgs::Empty::ConstPtr&) {
     ready = true;
 }
 
@@ -171,5 +176,3 @@ void RosSwarmRobot::run() {
         }
     }     
 }
-
-

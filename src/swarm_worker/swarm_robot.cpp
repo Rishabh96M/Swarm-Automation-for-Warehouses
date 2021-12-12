@@ -56,7 +56,7 @@ double SwarmRobot::turn_towards(double waypt2D) {
 double SwarmRobot::set_platform_height(double delta_h) {
 	// Get current platform height
 	// Update the velocity paramter
-
+	return 0.0;
 }
 
 bool SwarmRobot::is_queue_empty() {
@@ -67,4 +67,8 @@ Task SwarmRobot::get_task_from_queue() {
 	auto ret = task_queue.front();
 	task_queue.pop();
 	return ret;
+}
+
+int SwarmRobot::get_robot_id() {
+    return robot_id;
 }

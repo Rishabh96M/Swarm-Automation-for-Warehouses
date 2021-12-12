@@ -17,6 +17,7 @@
 #include <ros/ros.h>
 #include "warehouse_swarm/Crate.h"
 #include "warehouse_swarm/RobotTask.h"
+#include "../../include/swarm_master/swarm_master.hpp"
 #include "../../include/swarm_master/ros_swarm_master.hpp"
 
 bool RosSwarmMaster::swarm_connect_callback(
@@ -97,4 +98,8 @@ void RosSwarmMaster::startup(double duration, double hz) {
         assigned = assign_robots();
     }
 
+}
+
+SwarmMaster* RosSwarmMaster::get_swarm_master() {
+    return &master;
 }
