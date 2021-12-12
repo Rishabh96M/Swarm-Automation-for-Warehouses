@@ -61,7 +61,7 @@ class SwarmRobot {
      * @param waypt2D 
      * @return double 
      */
-    double turn_towards(std::array<double, 2> waypt2D);
+    double turn_towards(double waypt2D);
 
     /**
      * @brief Set the platform height
