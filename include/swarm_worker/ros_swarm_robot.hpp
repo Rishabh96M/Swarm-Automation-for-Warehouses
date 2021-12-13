@@ -15,6 +15,7 @@
 #include <string>
 #include <array>
 #include "./swarm_robot.hpp"
+#include <warehouse_swarm/SwarmConnect.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/UInt16.h>
 #include <nav_msgs/Odometry.h>
@@ -24,6 +25,7 @@
 class RosSwarmRobot : public SwarmRobot {
  private:
    ros::NodeHandle nh;
+   std::string nexus_id;
     std::string task_service_topic;
     ros::ServiceClient swarm_connect_client;
     ros::ServiceServer task_server;
@@ -33,8 +35,12 @@ class RosSwarmRobot : public SwarmRobot {
     bool ready = false;
 
  public:
-    RosSwarmRobot(std::string task_service_topic="/task");
-    ~RosSwarmRobot();
+    RosSwarmRobot(std::string _nexus_id, std::string task_service_topic="/task") :
+         nexus_id{_nexus_id},
+         task_service_topic(task_service_topic) {
+      swarm_connect_client = nh.serviceClient<warehouse_swarm::SwarmConnect>("swarm_connect");
+    }
+    ~RosSwarmRobot() {}
 
    void register_bot(int id);
 

@@ -140,17 +140,6 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/warehouse_swarm_node.cpp)
 
-add_executable(warehouse_swarm
-  src/swarm_master/assignment_designator.cpp
-  src/swarm_master/site.cpp
-  src/swarm_master/swarm_master.cpp
-  src/swarm_master/ros_swarm_master.cpp
-  src/swarm_master/main.cpp
-  src/swarm_worker/swarm_robot.cpp
-  src/swarm_worker/ros_swarm_robot.cpp
-)
-target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
-
 # add_executable(warehouse_swarm
 #   src/swarm_worker/swarm_robot.cpp
 #   src/swarm_worker/ros_swarm_robot.cpp
@@ -165,6 +154,7 @@ add_executable(swarm_master
   src/swarm_master/main.cpp
 )
 target_link_libraries(swarm_master ${catkin_LIBRARIES})
+add_dependencies(swarm_master warehouse_swarm_gencpp)
 
 add_executable(swarm_robot
   src/swarm_worker/main.cpp
@@ -172,12 +162,14 @@ add_executable(swarm_robot
   src/swarm_worker/ros_swarm_robot.cpp
 )
 target_link_libraries(swarm_robot ${catkin_LIBRARIES})
+add_dependencies(swarm_robot warehouse_swarm_gencpp)
 
 add_executable(task_orchestrator
   src/task_orchestrator/main.cpp
   src/task_orchestrator/task_orchestrator.cpp
 )
 target_link_libraries(task_orchestrator ${catkin_LIBRARIES})
+add_dependencies(task_orchestrator warehouse_swarm_gencpp)
 
 
 ## Rename C++ executable without prefix

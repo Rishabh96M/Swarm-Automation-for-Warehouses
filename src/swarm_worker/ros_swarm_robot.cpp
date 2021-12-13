@@ -23,24 +23,17 @@
 #include <std_msgs/UInt16.h>
 #include <warehouse_swarm/RobotTask.h>
 #include "../../include/swarm_worker/ros_swarm_robot.hpp"
+#include <std_msgs/Float64.h>
 #include "../../include/structs/task.hpp"
 #include "geometry_msgs/Vector3.h"
 #include "geometry_msgs/Quaternion.h"
 #include "tf/transform_datatypes.h"
 #include <tf/LinearMath/Matrix3x3.h> 
 
-
-RosSwarmRobot::RosSwarmRobot(std::string task_service_topic): 
-    task_service_topic(task_service_topic) {
-    swarm_connect_client = nh.serviceClient<warehouse_swarm::SwarmConnect>("swarm_connect");
-}
-
-RosSwarmRobot::~RosSwarmRobot() {}
-
 void RosSwarmRobot::register_bot(int id) {
   set_id(id);
-  pos_sub = nh.subscribe("robot_"+std::to_string(id)+"/odom", 1000, &RosSwarmRobot::update_robot_pos, this);
-  vel_pub = nh.advertise<geometry_msgs::Twist>("robot_"+std::to_string(id)+"/cmd_vel", 1000);
+  pos_sub = nh.subscribe(nexus_id, 1000, &RosSwarmRobot::update_robot_pos, this);
+  vel_pub = nh.advertise<geometry_msgs::Twist>(nexus_id + "/cmd_vel", 1000);
   task_sub = nh.subscribe("robot_" + std::to_string(id) + "/" + task_service_topic, 1000, &RosSwarmRobot::get_task_callback, this);
 }
 
@@ -52,9 +45,9 @@ bool RosSwarmRobot::connect_to_master() {
 
   srv.request.x = pos.at(0);
   srv.request.y = pos.at(1);
+  
   ROS_INFO_STREAM("Trying to connect to swarm: " << swarm_connect_client.exists());
-  if (swarm_connect_client.exists()) {
-    swarm_connect_client.call(srv);
+  if(swarm_connect_client.call(srv)) {
     id = srv.response.id;
     ROS_INFO_STREAM("Connecting robot_" << id << " to swarm");
     RosSwarmRobot::set_id(id);
