@@ -80,14 +80,14 @@ class RosSwarmMaster {
     * @brief Call SwarmMaster assign_robots_to_crate
     * 
     */
-  bool assign_robots();
+  std::shared_ptr<std::vector<Task> > assign_robots();
 
   /**
    * @brief Startup the swarm
    * 
    * @param duration 
    */
-  void startup(double duration=10, double hz=20);
+  std::shared_ptr<std::vector<Task> > startup(double duration=10, double hz=20, double timeout=-1);
 
   /**
    * @brief Get the swarm master object. FOR TESTING ONLY

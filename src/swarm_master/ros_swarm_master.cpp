@@ -54,8 +54,9 @@ void RosSwarmMaster::get_task_callback(const warehouse_swarm::Crate::ConstPtr& c
         &RosSwarmMaster::get_robot_waiting_callback, this);
 }
 
-bool RosSwarmMaster::assign_robots() {
+std::shared_ptr<std::vector<Task> > RosSwarmMaster::assign_robots() {
     auto assignments = master.assign_robots_to_crates();
+    std::shared_ptr<std::vector<Task> > tasks = std::make_shared<std::vector<Task> >();
     for (const auto& assignment : *assignments) {
         auto robot_tasks = master.break_down_assignment(assignment);
         for (const auto& task : *robot_tasks) {
@@ -78,26 +79,36 @@ bool RosSwarmMaster::assign_robots() {
             } else {
                 throw std::invalid_argument("Unhandled task type!");
             }
+            tasks->push_back(task);
             all_task_publisher.at(assignment.robot_id).publish(task_msg);
         }
     }
-    return !assignments->empty();
+    return tasks;
 }
 
-void RosSwarmMaster::startup(double duration, double hz) {
+std::shared_ptr<std::vector<Task> > RosSwarmMaster::startup(double duration, double hz, double timeout) {
     ros::Duration dur(duration);
     ros::Rate rate(hz);
+    ros::Time start_time = ros::Time::now();
+    ros::Duration dur_timeout(timeout);
 
+    std::shared_ptr<std::vector<Task> > ret{};
     bool assigned = false;
-    while (!assigned) {
+    bool timeout_bool = true;
+    ROS_INFO_STREAM("Entering loop");
+    while (!assigned && timeout_bool) {
         auto startup_begin_time = ros::Time::now();
-        while (ros::ok() && ros::Time::now() - startup_begin_time < dur) {
+        while (ros::ok() && timeout_bool && ros::Time::now() - startup_begin_time < dur) {
+            timeout_bool = (timeout == -1 || ros::Time::now() - start_time < dur_timeout);
             ros::spinOnce();
             rate.sleep();
         }
-        assigned = assign_robots();
+        ROS_INFO_STREAM("Checking assign robots");
+        ret = assign_robots();
+        assigned = !ret->empty();
     }
-
+    ROS_INFO_STREAM("Leaving loop");
+    return ret;
 }
 
 SwarmMaster* RosSwarmMaster::get_swarm_master() {
