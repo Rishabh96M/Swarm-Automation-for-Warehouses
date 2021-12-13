@@ -83,6 +83,7 @@ std::vector<std::array<double, 3> > SwarmMaster::assign_robots_along_crate(const
 
 std::shared_ptr<std::vector<Assignment> > SwarmMaster::assign_robots_to_crates() {
     std::shared_ptr<std::vector<Assignment> > assignments = std::make_shared<std::vector<Assignment> >();
+    if (sites.empty()) return assignments;
     if (!swarm_is_occupied && enough_robots_for_assignments()) {
         swarm_is_occupied = true;
         auto designations = designator->get_designations(sites, robots_avail);

@@ -45,8 +45,11 @@ bool RosSwarmRobot::connect_to_master() {
 
   srv.request.x = pos.at(0);
   srv.request.y = pos.at(1);
-  if (swarm_connect_client.call(srv)) {
+  ROS_INFO_STREAM("Trying to connect to swarm: " << swarm_connect_client.exists());
+  if (swarm_connect_client.exists()) {
+    swarm_connect_client.call(srv);
     id = srv.response.id;
+    ROS_INFO_STREAM("Connecting robot_" << id << " to swarm");
     RosSwarmRobot::set_id(id);
     // ROS_INFO("ID Given: %ld", id);
   } else {
@@ -58,8 +61,6 @@ bool RosSwarmRobot::connect_to_master() {
   vel_pub = nh.advertise<geometry_msgs::Twist>("robot_"+std::to_string(id)+"/cmd_vel", 1000);
   // Should be a client right but initialized as a publisher in h
   task_sub = nh.subscribe("robot_" + std::to_string(id) + "/" + task_service_topic, 1000, &RosSwarmRobot::get_task_callback, this);
-
-
   return true;
 }
 
@@ -174,5 +175,5 @@ void RosSwarmRobot::run() {
         } else {
             throw std::invalid_argument("Invalid task type given by master!");
         }
-    }     
+    }  
 }
