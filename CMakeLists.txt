@@ -140,16 +140,25 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/warehouse_swarm_node.cpp)
 
-add_executable(warehouse_swarm
+add_executable(swarm_master
   src/swarm_master/assignment_designator.cpp
   src/swarm_master/site.cpp
   src/swarm_master/swarm_master.cpp
   src/swarm_master/ros_swarm_master.cpp
   src/swarm_master/main.cpp
+)
+target_link_libraries(swarm_master ${catkin_LIBRARIES})
+
+add_executable(swarm_robot
   src/swarm_worker/swarm_robot.cpp
   src/swarm_worker/ros_swarm_robot.cpp
 )
-target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
+target_link_libraries(swarm_robot ${catkin_LIBRARIES})
+
+add_executable(task_orchestrator
+  src/task_orchestrator/main.cpp
+)
+target_link_libraries(task_orchestrator ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -213,7 +222,7 @@ target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
 #############
 
 # Add gtest based cpp test target and link libraries
-catkin_add_gtest(warehouse_swarm_test 
+catkin_add_gtest(warehouse_swarm_test
   test/main.cpp
   test/test_swarm_master.cpp
   test/test_swarm_worker.cpp
