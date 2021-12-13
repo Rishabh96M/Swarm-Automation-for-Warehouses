@@ -226,6 +226,26 @@ catkin_add_gtest(warehouse_swarm_test
   src/swarm_worker/swarm_robot.cpp
   src/swarm_worker/ros_swarm_robot.cpp
 )
+catkin_add_gtest(swarm_connect_test
+  test/test_swarm_connect_main.cpp
+  test/test_swarm_connect.cpp
+
+  src/swarm_worker/ros_swarm_robot.cpp
+  src/swarm_worker/swarm_robot.cpp
+)
+
+if(TARGET swarm_connect_test)
+  add_executable(swarm_master_test
+    src/swarm_master/assignment_designator.cpp
+    src/swarm_master/site.cpp
+    src/swarm_master/swarm_master.cpp
+    src/swarm_master/ros_swarm_master.cpp
+    test/swarm_master_main.cpp
+  )
+  target_link_libraries(swarm_master_test ${catkin_LIBRARIES})
+  target_link_libraries(swarm_connect_test ${catkin_LIBRARIES})
+endif()
+
 if(TARGET warehouse_swarm_test)
   target_link_libraries(warehouse_swarm_test ${catkin_LIBRARIES})
 endif()
