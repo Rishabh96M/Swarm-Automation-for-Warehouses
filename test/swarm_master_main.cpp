@@ -17,6 +17,6 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "swarm_master");
     SimpleClosestDesignator designator;
     RosSwarmMaster master(&designator, 2.0);
-    master.startup(1, 20, 10);
+    master.startup(1, 20, 5);
     return 0;
 }

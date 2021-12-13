@@ -203,19 +203,25 @@ TEST(SwarmMasterTests, TestAssignmentsForFourRobotReq) {
     std::vector<int> site_ids{};
     std::vector<int> robot_ids = add_buncha_robots(&master);
     site_ids.push_back(master.add_crate_to_system({{3,2,1}, {6,5,4}, {6,4}, 7}));
+    site_ids.push_back(master.add_crate_to_system({{3,2,1}, {6,5,4}, {2,8}, 7}));
 
     const auto& sites = master.get_sites();
     auto assignments = master.assign_robots_to_crates();
-    EXPECT_EQ(assignments->size(), 4);
+    EXPECT_EQ(assignments->size(), 8);
 
     std::vector<std::array<double, 3> > pos_along_crate{};
     for (const auto& assignment : *assignments)
         pos_along_crate.push_back(assignment.pos_crate_frame);
 
-    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {-3, 0, 0}));
-    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {3, 0, 180}));
-    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {0, -2, 90}));
-    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {0, 2, 270}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {-2.8, 2, 270}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {-2.8, -2, 90}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {2.8, 2, 270}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {2.8, -2, 90}));
+
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {1, 3.8, 180}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {-1, 3.8, 0}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {1, -3.8, 180}));
+    EXPECT_TRUE(found_element_in_vec(pos_along_crate, {-1, -3.8, 0}));
 }
 
 TEST(SwarmMasterTests, TestBreakDownAssignment) {

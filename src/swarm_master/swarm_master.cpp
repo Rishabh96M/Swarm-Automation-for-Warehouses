@@ -70,10 +70,17 @@ std::vector<std::array<double, 3> > SwarmMaster::assign_robots_along_crate(const
             ret.push_back({0, -half_y, 90});
         }
     } else if (num_robots == 4) {
-        ret.push_back({half_x, 0, 180});
-        ret.push_back({-half_x, 0, 0});
-        ret.push_back({0, half_y, 270});
-        ret.push_back({0, -half_y, 90});
+        if (X_longer_than_Y) {
+            ret.push_back({half_x-0.2, half_y, 270});
+            ret.push_back({half_x-0.2, -half_y, 90});
+            ret.push_back({-half_x+0.2, half_y, 270});
+            ret.push_back({-half_x+0.2, -half_y, 90});
+        } else {
+            ret.push_back({half_x, half_y-0.2, 180});
+            ret.push_back({-half_x, half_y-0.2, 0});
+            ret.push_back({half_x, -half_y+0.2, 180});
+            ret.push_back({-half_x, -half_y+0.2, 0});
+        }
     } else {
         throw std::invalid_argument("There must be fewer than 5 robots. We cannot lift this crate!");
     }

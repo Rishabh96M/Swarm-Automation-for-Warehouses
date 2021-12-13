@@ -34,7 +34,7 @@ class SwarmMaster {
   std::vector<int> assigned_site_id{};
   std::unordered_map<int, Robot> robots_avail{};
   std::unordered_map<int, Site> sites{};
-  std::unordered_map<int, std::set<int>> robots_at_site_waiting;
+  std::unordered_map<int, std::set<int>> robots_at_site_waiting{};
 
   /**
    * @brief Clear crates from vect
