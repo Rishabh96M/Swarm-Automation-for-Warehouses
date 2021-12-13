@@ -36,6 +36,8 @@ class RosSwarmRobot : public SwarmRobot {
     RosSwarmRobot(std::string task_service_topic="/task");
     ~RosSwarmRobot();
 
+   void register_bot(int id);
+
     /**
      * @brief Connect to swarm master
      * 
@@ -78,5 +80,6 @@ class RosSwarmRobot : public SwarmRobot {
 
     void run();
 
+    int get_queue_size();
     
 };

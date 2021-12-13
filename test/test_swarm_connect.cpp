@@ -22,10 +22,12 @@
 void reset_swarm() {
     static ros::NodeHandle nh;
     static ros::ServiceClient reset = nh.serviceClient<std_srvs::Empty>("swarm_reset");
-    reset.call(std_srvs::Empty());
+    std_srvs::Empty empty;
+    reset.call(empty);
+    ros::Duration(3).sleep();
 }
 
-TEST(MasterWorkerInteractionTests, TestSwarmConnect) {
+TEST(SwarmConnectTest, TestSwarmConnect) {
     RosSwarmRobot robot;
     RosSwarmRobot robot1;
     RosSwarmRobot robot2;
@@ -38,45 +40,4 @@ TEST(MasterWorkerInteractionTests, TestSwarmConnect) {
     EXPECT_EQ(robot.get_robot_id(), 0);
     EXPECT_EQ(robot1.get_robot_id(), 1);
     EXPECT_EQ(robot2.get_robot_id(), 2);
-
-    reset_swarm();
 }
-
-int num_tasks_0 = 0;
-void task_cb0(const warehouse_swarm::RobotTask::ConstPtr& task_msg) {
-    num_tasks_0++;
-}
-
-int num_tasks_1 = 0;
-void task_cb1(const warehouse_swarm::RobotTask::ConstPtr& task_msg) {
-    num_tasks_1++;
-}
-
-TEST(MasterWorkerInteractionTests, TestSendRobotTask) {
-    RosSwarmRobot robot0;
-    RosSwarmRobot robot1;
-
-    TaskOrchestrator taskOrch;
-    std::vector<Crate> crates{{{5.0, -6.0, 0.25}, {-5.0, -6.0, 0.25}, {0.6, 0.6}, 4)}};
-    taskOrch.publish_full_task_list(crates);
-
-    robot0.connect_to_master();
-    robot1.connect_to_master();
-  
-    ros::NodeHandle nh;
-    auto robot0_task = nh.subscribe("robot_0/task", 100, &task_cb0);
-    auto robot0_task = nh.subscribe("robot_0/task", 100, &task_cb1);
-    
-    ros::Duration dur(2);
-    ros::Rate rate(10);
-    auto start = ros::Time::now();
-    while (ros::Time::now() - start < dur) {
-        ros::spinOnce();
-        rate.sleep();
-    }
-    EXPECT_EQ(num_tasks_0, 7);
-    EXPECT_EQ(num_tasks_1, 7);
-
-    reset_swarm();
-}
-

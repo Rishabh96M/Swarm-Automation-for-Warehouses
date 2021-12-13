@@ -37,6 +37,13 @@ RosSwarmRobot::RosSwarmRobot(std::string task_service_topic):
 
 RosSwarmRobot::~RosSwarmRobot() {}
 
+void RosSwarmRobot::register_bot(int id) {
+  set_id(id);
+  pos_sub = nh.subscribe("robot_"+std::to_string(id)+"/odom", 1000, &RosSwarmRobot::update_robot_pos, this);
+  vel_pub = nh.advertise<geometry_msgs::Twist>("robot_"+std::to_string(id)+"/cmd_vel", 1000);
+  task_sub = nh.subscribe("robot_" + std::to_string(id) + "/" + task_service_topic, 1000, &RosSwarmRobot::get_task_callback, this);
+}
+
 bool RosSwarmRobot::connect_to_master() {
   std::array<double, 3> pos = RosSwarmRobot::get_pos();
   warehouse_swarm::SwarmConnect srv;
@@ -57,10 +64,7 @@ bool RosSwarmRobot::connect_to_master() {
     return false;
   }
 
-  pos_sub = nh.subscribe("robot_"+std::to_string(id)+"/odom", 1000, &RosSwarmRobot::update_robot_pos, this);
-  vel_pub = nh.advertise<geometry_msgs::Twist>("robot_"+std::to_string(id)+"/cmd_vel", 1000);
-  // Should be a client right but initialized as a publisher in h
-  task_sub = nh.subscribe("robot_" + std::to_string(id) + "/" + task_service_topic, 1000, &RosSwarmRobot::get_task_callback, this);
+  register_bot(id);
   return true;
 }
 
@@ -176,4 +180,8 @@ void RosSwarmRobot::run() {
             throw std::invalid_argument("Invalid task type given by master!");
         }
     }  
+}
+
+int RosSwarmRobot::get_queue_size() {
+    return task_queue.size();
 }
