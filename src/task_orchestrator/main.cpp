@@ -10,6 +10,7 @@
  */
 
 #include <vector>
+#include <ros/ros.h>
 #include "../../include/structs/crate.hpp"
 #include "warehouse_swarm/Crate.h"
 #include "geometry_msgs/Point.h"
@@ -17,6 +18,7 @@
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "task_orchestrator");
+    ros::Duration(3).sleep();
     std::vector<Crate> crates;
     crates.emplace_back(Crate({5.0, 0.0, 0.25}, {-5.0, 0.0, 0.25}, {0.6, 0.6}, 4));
     crates.emplace_back(Crate({5.0, 2.0, 0.25}, {-5.0, 2.0, 0.25}, {0.6, 0.6}, 8));
@@ -26,6 +28,7 @@ int main(int argc, char** argv) {
     crates.emplace_back(Crate({5.0, 6.0, 0.25}, {-5.0, 6.0, 0.25}, {0.6, 0.6}, 4));
     crates.emplace_back(Crate({5.0, -6.0, 0.25}, {-5.0, -6.0, 0.25}, {0.6, 0.6}, 4));
     TaskOrchestrator taskOrch;
+    ROS_INFO_STREAM("Publishing task list");
     taskOrch.publish_full_task_list(crates);
     return 0;
 }

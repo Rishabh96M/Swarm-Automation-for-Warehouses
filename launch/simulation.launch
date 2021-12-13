@@ -1,18 +1,17 @@
 <launch>
-
-    <node
-        name="task_orchestrator"
-        pkg="warehouse_swarm"
-        type="task_orchestrator"
-        output="screen"
-    />
-
     <node
         name="swarm_master"
         pkg="warehouse_swarm"
         type="swarm_master"
         output="screen"
     />
+
+    <!-- <node
+        name="task_orchestrator"
+        pkg="warehouse_swarm"
+        type="task_orchestrator"
+        output="screen"
+    /> -->
 
     <include file="$(find nexus_4wd_mecanum_gazebo)/launch/nexus_4wd_mecanum_multi.launch"/>
 

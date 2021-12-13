@@ -23,7 +23,6 @@
 #include <std_msgs/UInt16.h>
 #include <warehouse_swarm/RobotTask.h>
 #include "../../include/swarm_worker/ros_swarm_robot.hpp"
-#include <std_msgs/Float64.h>
 #include "../../include/structs/task.hpp"
 #include "geometry_msgs/Vector3.h"
 #include "geometry_msgs/Quaternion.h"
@@ -45,9 +44,9 @@ bool RosSwarmRobot::connect_to_master() {
 
   srv.request.x = pos.at(0);
   srv.request.y = pos.at(1);
-  
   ROS_INFO_STREAM("Trying to connect to swarm: " << swarm_connect_client.exists());
-  if(swarm_connect_client.call(srv)) {
+  if (swarm_connect_client.exists()) {
+    swarm_connect_client.call(srv);
     id = srv.response.id;
     ROS_INFO_STREAM("Connecting robot_" << id << " to swarm");
     RosSwarmRobot::set_id(id);

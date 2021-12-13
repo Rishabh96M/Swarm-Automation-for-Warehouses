@@ -18,12 +18,15 @@
 #include "../structs/crate.hpp"
 
 class TaskOrchestrator {
- public:
-    TaskOrchestrator(/* args */) {}
-    ~TaskOrchestrator() {}
-
+ private:
     ros::Publisher payload_pub;
     ros::NodeHandle nh;
+
+ public:
+    TaskOrchestrator(/* args */) {
+        payload_pub = nh.advertise<warehouse_swarm::Crate>("/payload_details", 1000);
+    }
+    ~TaskOrchestrator() {}
 
     /**
      * @brief Publishes full task list to task service

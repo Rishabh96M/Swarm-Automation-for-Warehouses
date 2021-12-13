@@ -10,12 +10,14 @@
  */
 
 #include <ros/ros.h>
+#include <string>
 #include "../../include/swarm_worker/ros_swarm_robot.hpp"
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "swarm_worker");
-    RosSwarmRobot robot;
-    robot.connect_to_master();
+    std::string name(argv[1]);
+    RosSwarmRobot robot(argv[1]);
+    robot.register_bot(static_cast<int>(name.back()));
     robot.run();
     return 0;
 }
