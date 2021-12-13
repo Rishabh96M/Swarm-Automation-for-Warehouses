@@ -23,15 +23,15 @@ class SwarmRobot {
     std::queue<Task> task_queue;
     std::array<double, 3> curr_pos;
     double platform_height{};
+ public:
+    SwarmRobot(/* args */) {}
+    ~SwarmRobot() {}
 
     /**
      * @brief Set the id int
      * 
      */
     void set_id(int);
- public:
-    SwarmRobot(/* args */) {}
-    ~SwarmRobot() {}
 
     /**
      * @brief Add task to task queue

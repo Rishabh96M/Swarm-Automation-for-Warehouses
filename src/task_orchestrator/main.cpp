@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-bool TaskOrchestrator::publish_full_task_list(const std::vector<Crate>& crates) {
+bool TaskOrchestrator::publish_full_task_list(std::vector<Crate>& crates) {
   std::vector<int>::iterator i;
   payload_pub = nh.advertise<warehouse_swarm::Crate>("/payload_details", 1000);
   for (auto i : crates){
