@@ -49,3 +49,9 @@ The initial UML is here below
 [ Youtube link to the Phase 1](https://youtu.be/n60_Hbyo3_k)
 
 [ Youtube link to the Phase 2](https://youtu.be/ieRox915Phw) -->
+
+[Presentation Slides](https://docs.google.com/presentation/d/1gjr_lBHrhyawHyKeFrmjXKeC7wYBOHz7vxMMBmv3Ud8/edit?usp=sharing)
+
+[Presentation Video](https://drive.google.com/file/d/1xo3g0pxpBN4lciy5oa9pPvTb9mIMyZVg/view?usp=sharing)
+
+[Live Demo Video](https://drive.google.com/file/d/1a_iwKQVGohLZxQPSo0FLmIcgGplTvW4j/view?usp=sharing)
