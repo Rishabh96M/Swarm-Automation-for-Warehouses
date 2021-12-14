@@ -1,5 +1,9 @@
 # Swarm-Automation-for-Warehouses
 
+## Packages and Dependencies
+This project is developed and tested on ROS Neotic and Melodic, The project is developed using C++ langauge.
+We use ROS packages such as TF, roscpp, std_msgs, geometry_msgs,message_runtime
+
 ## Overview
 
 The aim of the project is to implement a solution for automation of warehouses using robot swarms. In our proposed system, a group of robots closer to the target object, coordinate with each other based on the relative positions to the target object and group together to pick the object and deliver it to the object's goal position.
@@ -92,6 +96,9 @@ cppcheck --language=c++ --std=c++11 -I include/ --suppress=missingIncludeSystem 
 ```
 
 The **results** folder contains the results of cpplint and cppcheck.
+
+##Doxygen File
+The index.html file in the Doxygen folder has all the class and method details.
 
 ## Deliverables
 
