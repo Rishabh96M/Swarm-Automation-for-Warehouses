@@ -2,19 +2,53 @@
 
 ## Overview
 
-The aim of the project is to implement a soultion for automation of warehouses using robot swarms. In our proposed system, a group of robots closer to the target object, coordinate with each other based on the relative positions to the target object and group together to pick the object and deliver it to the object's goal position.
+The aim of the project is to implement a solution for automation of warehouses using robot swarms. In our proposed system, a group of robots closer to the target object, coordinate with each other based on the relative positions to the target object and group together to pick the object and deliver it to the object's goal position.
 
 The following assumptions are made while developing this project :-
 
-  1. Individual robot in the swarm can bear the given load and carry it to the respective target. 
-  2. Terrain and map of the warehouse is known to the swarm master. 
-  3. The communication between the robots happens without any breaks and the position broadcast by the robot is accurate to $10^{-1}$ units. 
-  4. There will be no failure in the in the pickup process and we expect the robots will carry the object all the way to the object's location. 
-  5. Clearance of 1 unit from any obstacle. 
-  6. No slippage between the wheel and motor shaft and the whole system will have the same RPM. 
+  1. Individual robot in the swarm can bear the given load and carry it to the respective target.
+  2. Terrain and map of the warehouse is known to the swarm master.
+  3. The communication between the robots happens without any breaks and the position broadcast by the robot is accurate to $10^{-1}$ units.
+  4. There will be no failure in the in the pickup process and we expect the robots will carry the object all the way to the object's location.
+  5. Clearance of 1 unit from any obstacle.
+  6. No slippage between the wheel and motor shaft and the whole system will have the same RPM.
   7. The a heavier object will have a size that is wide enough to accommodate the required number of robots to lift it.
-  8. 
-  
+
+  Our idea to lift a crate is
+  ![](UML/idea.png)
+
+## Steps to install and launch the simulation
+  Install and build the dependencies:  
+  ```
+  source <path_to_ws>/devel/setup.bash
+  cd <path_to_ws>/src
+  git clone https://github.com/Rishabh96M/nexus_4wd_mecanum_simulator.git
+  cd <path_to_ws>
+  catkin_make
+  ```
+
+  Clone the swarm repository :
+  ```
+  source <path_to_ws>/devel/setup.bash
+  cd <path_to_ws>/src
+  git clone https://github.com/PrannoyNamala/Swarm-Automation-for-Warehouses.git
+  cd <path_to_ws>
+  catkin_make
+  ```
+
+  To launch and run the simulation :
+  ```
+  source <path_to_ws>/devel/setup.bash
+  roslaunch warehouse_swarm simulation.launch
+  ```
+  This will launch 20 nexus robots with a platform to lift the payload on to the swarm world. Move the robots to the payload and perform the required action
+
+## To run the unit tests and gtest
+  ```
+  cd <path_to_ws>/
+  catkin_make run_tests_warehouse_swarm
+  catkin_make run_tests_warehouse_swarm_gtest
+  ```
 ## Agile Iterative Process (AIP)
 This project will be completed using AIP with the involvement of 3 programmers using Pair-programming with a design keeper in turns. The detailed Product Backlog, Iteration Backlogs and Work Log are mentioned in the link given below :
 
@@ -28,24 +62,41 @@ The initial activity diagram is here below
 The initial UML is here below
 ![](UML/UML.png)
 
-<!-- ## Important Links
- -->
-<!-- [Proposal Phase-0](https://drive.google.com/file/d/1umYMgm8mL1ALpWycH2YrRFYiQv6a0TN-/view?usp=sharing)
+The final UML is here below
+![](UML/UML_final.png)
 
-[Proposal Phase-1 Update](https://drive.google.com/file/d/1YsaQfGZgOE7c7Dwa6bHzNXLxi3fZrg2r/view)
+Our Communications is here below
+![](UML/comm.png)
 
-[Proposal Phase-2 Update](https://drive.google.com/file/d/1H7cM33AkOMfr0ANB2vwNEoRtOkwhLxyO/view?usp=sharing)
+## Checking the information of bag file
+The Rosbag in in the **results** folder, To check the information of the bag file, run the following command in the location where bag file is saved:
+```
+rosbag info rosbag_record.bag
+```
 
-[Quad Chart Phase-0](https://drive.google.com/file/d/1-h-sLWbmNeX7z31qwRXdcSlXcgGUWfXG/view?usp=sharing)
+## Playing from the bag file
+With roscore and the listener node running, in a new terminal run:
+```
+source catkin_ws/devel/setup.bash
+rosbag play rosbag_record.bag
+```
 
-[UML Diagram](https://drive.google.com/file/d/1Zu3fTrS95gYpkMdT5xp2CJ424eM1xON7/view?usp=sharing)
+## Running cpplint & cppcheck tests
+Run the following command in the src directory of the project to generate cpplint results, the ouput is stored in the **results** folder
+```
+cpplint $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/")
+```
+Run the following command in the src directory of the project to generate cppcheck results, the ouput is stored in the **results** folder
+```
+cppcheck --language=c++ --std=c++11 -I include/ --suppress=missingIncludeSystem  $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/")
+```
 
-[UML Diagram Phase 1](https://drive.google.com/file/d/183aDx3iQR4v4fukx3KLp-rI0bn9yGZ4i/view?usp=sharing)
+The **results** folder contains the results of cpplint and cppcheck.
 
-[UML Diagram Phase 2](https://drive.google.com/file/d/1sYCCHkBEKD8TA1m3nXA8TqwH6car5CTh/view?usp=sharing)
+## Deliverables
 
-[ Youtube link to the Proposal](https://youtu.be/cgePebQyXTI)
+[Presentation Slides](https://docs.google.com/presentation/d/1gjr_lBHrhyawHyKeFrmjXKeC7wYBOHz7vxMMBmv3Ud8/edit?usp=sharing)
 
-[ Youtube link to the Phase 1](https://youtu.be/n60_Hbyo3_k)
+[Presentation Video](https://drive.google.com/file/d/1xo3g0pxpBN4lciy5oa9pPvTb9mIMyZVg/view?usp=sharing)
 
-[ Youtube link to the Phase 2](https://youtu.be/ieRox915Phw) -->
+[Live Demo Video](https://drive.google.com/file/d/1a_iwKQVGohLZxQPSo0FLmIcgGplTvW4j/view?usp=sharing)

@@ -28,9 +28,9 @@ void reset_swarm() {
 }
 
 TEST(SwarmConnectTest, TestSwarmConnect) {
-    RosSwarmRobot robot;
-    RosSwarmRobot robot1;
-    RosSwarmRobot robot2;
+    RosSwarmRobot robot("nexus_1");
+    RosSwarmRobot robot1("nexus_2");
+    RosSwarmRobot robot2("nexus_3");
     ros::Duration(1).sleep();
    
     robot.connect_to_master();

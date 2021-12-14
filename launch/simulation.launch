@@ -6,12 +6,12 @@
         output="screen"
     />
 
-    <!-- <node
+    <node
         name="task_orchestrator"
         pkg="warehouse_swarm"
         type="task_orchestrator"
         output="screen"
-    /> -->
+    />
 
     <include file="$(find nexus_4wd_mecanum_gazebo)/launch/nexus_4wd_mecanum_multi.launch"/>
 
