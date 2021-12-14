@@ -18,8 +18,9 @@ The following assumptions are made while developing this project :-
   6. No slippage between the wheel and motor shaft and the whole system will have the same RPM.
   7. The a heavier object will have a size that is wide enough to accommodate the required number of robots to lift it.
 
-  Our idea to lift a crate is
-  ![](UML/idea.png)
+
+ Our idea to lift a crate is
+ ![](UML/idea.png)
 
 ## Steps to install and launch the simulation
   Install and build the dependencies:  
@@ -95,10 +96,15 @@ Run the following command in the src directory of the project to generate cppche
 cppcheck --language=c++ --std=c++11 -I include/ --suppress=missingIncludeSystem  $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/")
 ```
 
+
 The **results** folder contains the results of cpplint and cppcheck.
 
 ##Doxygen File
 The index.html file in the Doxygen folder has all the class and method details.
+=======
+
+The **results** folder contains the results of cpplint and cppcheck.
+
 
 ## Deliverables
 
