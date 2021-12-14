@@ -171,7 +171,6 @@ add_executable(task_orchestrator
 target_link_libraries(task_orchestrator ${catkin_LIBRARIES})
 add_dependencies(task_orchestrator warehouse_swarm_gencpp)
 
-
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
