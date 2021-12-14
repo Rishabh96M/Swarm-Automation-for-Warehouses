@@ -1,0 +1,10 @@
+<map id="include/structs/task.hpp" name="include/structs/task.hpp">
+<area shape="rect" id="node1" title="Assignment struct declaration." alt="" coords="357,5,535,32"/>
+<area shape="rect" id="node2" href="$swarm__master_8hpp_source.html" title=" " alt="" coords="213,80,383,121"/>
+<area shape="rect" id="node5" href="$test__swarm__connect_8cpp.html" title=" " alt="" coords="365,259,577,285"/>
+<area shape="rect" id="node6" href="$test__swarm__master_8cpp.html" title="Tests for the swarm master." alt="" coords="227,177,433,203"/>
+<area shape="rect" id="node7" href="$swarm__robot_8hpp_source.html" title=" " alt="" coords="509,80,677,121"/>
+<area shape="rect" id="node3" href="$ros__swarm__master_8hpp_source.html" title=" " alt="" coords="23,169,202,211"/>
+<area shape="rect" id="node4" href="$swarm__master__main_8cpp.html" title="Main script for RosSwarmMaster Testing." alt="" coords="5,259,220,285"/>
+<area shape="rect" id="node8" href="$ros__swarm__robot_8hpp_source.html" title=" " alt="" coords="509,169,677,211"/>
+</map>

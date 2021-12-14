@@ -1,0 +1,17 @@
+<launch>
+
+    <node
+        name="swarm_master_test"
+        pkg="warehouse_swarm"
+        type="swarm_master_test"
+        output="screen"
+    />
+
+    <node
+        name="swarm_connect_test"
+        pkg="warehouse_swarm"
+        type="swarm_connect_test"
+        output="screen"
+    />
+
+</launch>

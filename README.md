@@ -1,8 +1,12 @@
 # Swarm-Automation-for-Warehouses
 
+## Packages and Dependencies
+This project is developed and tested on ROS Neotic and Melodic, The project is developed using C++ langauge.
+We use ROS packages such as TF, roscpp, std_msgs, geometry_msgs,message_runtime
+
 ## Overview
 
-The aim of the project is to implement a soultion for automation of warehouses using robot swarms. In our proposed system, a group of robots closer to the target object, coordinate with each other based on the relative positions to the target object and group together to pick the object and deliver it to the object's goal position.
+The aim of the project is to implement a solution for automation of warehouses using robot swarms. In our proposed system, a group of robots closer to the target object, coordinate with each other based on the relative positions to the target object and group together to pick the object and deliver it to the object's goal position.
 
 The following assumptions are made while developing this project :-
 
@@ -13,6 +17,10 @@ The following assumptions are made while developing this project :-
   5. Clearance of 1 unit from any obstacle.
   6. No slippage between the wheel and motor shaft and the whole system will have the same RPM.
   7. The a heavier object will have a size that is wide enough to accommodate the required number of robots to lift it.
+
+
+ Our idea to lift a crate is
+ ![](UML/idea.png)
 
 ## Steps to install and launch the simulation
   Install and build the dependencies:  
@@ -59,6 +67,25 @@ The initial activity diagram is here below
 The initial UML is here below
 ![](UML/UML.png)
 
+The final UML is here below
+![](UML/UML_final.png)
+
+Our Communications is here below
+![](UML/comm.png)
+
+## Checking the information of bag file
+The Rosbag in in the **results** folder, To check the information of the bag file, run the following command in the location where bag file is saved:
+```
+rosbag info rosbag_record.bag
+```
+
+## Playing from the bag file
+With roscore and the listener node running, in a new terminal run:
+```
+source catkin_ws/devel/setup.bash
+rosbag play rosbag_record.bag
+```
+
 ## Running cpplint & cppcheck tests
 Run the following command in the src directory of the project to generate cpplint results, the ouput is stored in the **results** folder
 ```
@@ -69,7 +96,15 @@ Run the following command in the src directory of the project to generate cppche
 cppcheck --language=c++ --std=c++11 -I include/ --suppress=missingIncludeSystem  $( find . -name \*.h -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/")
 ```
 
+
 The **results** folder contains the results of cpplint and cppcheck.
+
+##Doxygen File
+The index.html file in the Doxygen folder has all the class and method details.
+=======
+
+The **results** folder contains the results of cpplint and cppcheck.
+
 
 ## Deliverables
 

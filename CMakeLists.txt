@@ -10,6 +10,9 @@ project(warehouse_swarm)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  geometry_msgs
+  message_generation
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -46,18 +49,17 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  RobotTask.msg
+  Crate.msg
+)
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  SwarmConnect.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -67,10 +69,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -104,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include/structs include/swarm_master include/swarm_worker include/task_orchestrator
   LIBRARIES warehouse_swarm
-  CATKIN_DEPENDS roscpp std_msgs
+  CATKIN_DEPENDS roscpp std_msgs geometry_msgs message_runtime
   DEPENDS system_lib
 )
 
@@ -137,13 +140,36 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/warehouse_swarm_node.cpp)
 
-add_executable(warehouse_swarm
+# add_executable(warehouse_swarm
+#   src/swarm_worker/swarm_robot.cpp
+#   src/swarm_worker/ros_swarm_robot.cpp
+# )
+# target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
+
+add_executable(swarm_master
   src/swarm_master/assignment_designator.cpp
   src/swarm_master/site.cpp
   src/swarm_master/swarm_master.cpp
-  src/main.cpp
+  src/swarm_master/ros_swarm_master.cpp
+  src/swarm_master/main.cpp
 )
-target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
+target_link_libraries(swarm_master ${catkin_LIBRARIES})
+add_dependencies(swarm_master warehouse_swarm_gencpp)
+
+add_executable(swarm_robot
+  src/swarm_worker/main.cpp
+  src/swarm_worker/swarm_robot.cpp
+  src/swarm_worker/ros_swarm_robot.cpp
+)
+target_link_libraries(swarm_robot ${catkin_LIBRARIES})
+add_dependencies(swarm_robot warehouse_swarm_gencpp)
+
+add_executable(task_orchestrator
+  src/task_orchestrator/main.cpp
+  src/task_orchestrator/task_orchestrator.cpp
+)
+target_link_libraries(task_orchestrator ${catkin_LIBRARIES})
+add_dependencies(task_orchestrator warehouse_swarm_gencpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -210,11 +236,38 @@ target_link_libraries(warehouse_swarm ${catkin_LIBRARIES})
 catkin_add_gtest(warehouse_swarm_test 
   test/main.cpp
   test/test_swarm_master.cpp
+  test/test_swarm_worker.cpp
+  # test/test_master_worker_interaction.cpp
 
   src/swarm_master/assignment_designator.cpp
   src/swarm_master/site.cpp
   src/swarm_master/swarm_master.cpp
+  src/swarm_master/ros_swarm_master.cpp
+  src/swarm_worker/swarm_robot.cpp
+  src/swarm_worker/ros_swarm_robot.cpp
+  src/task_orchestrator/task_orchestrator.cpp
 )
+catkin_add_gtest(swarm_connect_test
+  test/test_swarm_connect_main.cpp
+  test/test_swarm_connect.cpp
+
+  src/swarm_worker/ros_swarm_robot.cpp
+  src/swarm_worker/swarm_robot.cpp
+  src/task_orchestrator/task_orchestrator.cpp
+)
+
+if(TARGET swarm_connect_test)
+  add_executable(swarm_master_test
+    src/swarm_master/assignment_designator.cpp
+    src/swarm_master/site.cpp
+    src/swarm_master/swarm_master.cpp
+    src/swarm_master/ros_swarm_master.cpp
+    test/swarm_master_main.cpp
+  )
+  target_link_libraries(swarm_master_test ${catkin_LIBRARIES})
+  target_link_libraries(swarm_connect_test ${catkin_LIBRARIES})
+endif()
+
 if(TARGET warehouse_swarm_test)
   target_link_libraries(warehouse_swarm_test ${catkin_LIBRARIES})
 endif()
