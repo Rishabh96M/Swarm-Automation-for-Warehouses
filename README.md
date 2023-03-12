@@ -100,6 +100,7 @@ cppcheck --language=c++ --std=c++11 -I include/ --suppress=missingIncludeSystem 
 The **results** folder contains the results of cpplint and cppcheck.
 
 ##Doxygen File
+
 The index.html file in the Doxygen folder has all the class and method details.
 =======
 
